@@ -23,12 +23,11 @@ class Grid:
         self.revealed[row][col] = True
         index = row * self.size + col
         return self.hidden_values[index]
-
-    def hide_cell(self, row, col):
-        """Hide a cell again after revealing."""
-        if not (0 <= row < self.size and 0 <= col < self.size):
-            return
-        self.revealed[row][col] = False
+    
+    def hide_cells(self, cells):
+        """Hide specified cells after mismatch."""
+        for row, col in cells:
+            self.revealed[row][col] = False
 
     def display_grid(self):
         """Display the current state of the grid with labeled rows and columns."""
