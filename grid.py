@@ -39,7 +39,7 @@ class Grid:
 
         # Print each row with a row label and grid content
         for row in range(self.size):
-            print(f"[{row}]", end=" ")
+            print(f"\n[{row}]", end=" ")
             for col in range(self.size):
                 if self.revealed[row][col]:
                     index = row * self.size + col
@@ -47,3 +47,10 @@ class Grid:
                 else:
                     print("  X", end=" ")
             print()
+
+    def is_grid_revealed(self):
+        """Check if all cells in the grid are revealed."""
+        for row in self.revealed:
+            if not all(row):
+                return False
+        return True
