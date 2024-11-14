@@ -1,3 +1,5 @@
+#Author : Yu Hua Yang 40312636
+
 import random
 
 class Grid:
