@@ -1,6 +1,6 @@
 #Author : Yu Hua Yang 40312636
-
 import os
+import sys
 import time
 from grid import Grid
 
@@ -19,7 +19,6 @@ def get_coordinates(size, grid):
         try:
             cell = input("\nEnter cell (e.g., A0): ").strip().upper()
             col, row = ord(cell[0]) - 65, int(cell[1:])
-
             if 0 <= row < size and 0 <= col < size:
                 return row, col
             else:
@@ -46,27 +45,26 @@ def print_logo():
     print("|         Brain Buster         |")
     print("--------------------------------\n")
 
-def choose_grid_size():
-    while True:
-        try:
-            size = int(input("Enter grid size (2, 4, or 6): "))
-            if size in (2, 4, 6):
-                return size
-            else:
-                clear_screen()
-                print_logo()
-                print("Invalid size. Enter 2, 4, or 6.")
-        except ValueError:
-            clear_screen()
-            print_logo()
-            print("Invalid input. Please enter a number.")
-
 def main():
+    # Check and validate the command-line argument
+    if len(sys.argv) != 2:
+        print("Usage: python game.py <grid_size>")
+        print("Grid size must be one of the following: 2, 4, or 6.")
+        sys.exit(1)
+
+    try:
+        size = int(sys.argv[1])
+        if size not in (2, 4, 6):
+            raise ValueError
+    except ValueError:
+        print("Invalid grid size. Allowed values are 2, 4, or 6.")
+        sys.exit(1)
+
+    # Initialize the game
     won = False
     clear_screen()
     print_logo()
     
-    size = choose_grid_size()
     grid = Grid(size)
     minimum_guess = size * (size / 2)
     opt1 = opt2 = 0
@@ -108,6 +106,21 @@ def show_score_if_won(won, opt1, opt2, minimum_guess):
         score = 0 if opt1 == 0 else int((minimum_guess / (opt1 + opt2)) * 100)
         print(f"\n{'You cheated -- Loser!' if score == 0 else 'Oh Happy Day, You won!!'} Score: {score}")
 
+def choose_grid_size():
+    while True:
+        try:
+            size = int(input("Enter grid size (2, 4, or 6): "))
+            if size in (2, 4, 6):
+                return size
+            else:
+                clear_screen()
+                print_logo()
+                print("Invalid size. Enter 2, 4, or 6.")
+        except ValueError:
+            clear_screen()
+            print_logo()
+            print("Invalid input. Please enter a number.")
+
 def handle_match_selection(grid, size, opt1):
     clear_screen()
     print_logo()
@@ -140,6 +153,7 @@ def handle_match_selection(grid, size, opt1):
 
             if val1 == val2:
                 print("\nIt's a match!")
+                time.sleep(2)
             else:
                 print("\nNot a match.")
                 time.sleep(2)
